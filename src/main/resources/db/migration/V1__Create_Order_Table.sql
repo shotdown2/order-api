@@ -1,0 +1,12 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS orders (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    external_order_id VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    total_value NUMERIC(19, 2) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    client_name VARCHAR(255) NOT NULL,
+    client_document VARCHAR(20) NOT NULL
+);
