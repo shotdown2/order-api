@@ -31,8 +31,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class ProductEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue
     @Column(name = "id", updatable = false, nullable = false)
@@ -44,7 +42,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "quantity", nullable = false, precision = 19, scale = 2)
     private BigDecimal quantity;
 
-    @Column(name = "value", nullable = false, precision = 19, scale = 2)
+    @Column(name = "unit_price", nullable = false, precision = 19, scale = 2)
     private BigDecimal unitPrice;
 
     @ManyToOne
