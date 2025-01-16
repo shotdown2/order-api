@@ -81,19 +81,19 @@ public class OrderServiceImpl implements OrderService {
         return modelMapper.map(entity, OrderDto.class);
     }
 
-    private void saveProducts(OrderItemDto item, OrderEntity savedOrderEntity){
+    void saveProducts(OrderItemDto item, OrderEntity savedOrderEntity){
         ProductEntity product = modelMapper.map(item, ProductEntity.class);
         product.setOrder(savedOrderEntity);
         productRepository.save(product);
     }
 
-    private BigDecimal totalValueOrder(OrderRequest order){
+    BigDecimal totalValueOrder(OrderRequest order){
         return order.getItems().stream()
                 .map(item -> item.getUnitPrice().multiply(item.getQuantity()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private OrderEntity saveOrder(OrderRequest order){
+    OrderEntity saveOrder(OrderRequest order){
         OrderEntity orderEntity = modelMapper.map(order, OrderEntity.class);
         orderEntity.setTotalValue(totalValueOrder(order));
         orderEntity.setStatus(OrderStatusEnum.PROCESSADO);
@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(orderEntity);
     }
 
-    private OrderResponse builderResponse(OrderRequest order, OrderStatusEnum status){
+    OrderResponse builderResponse(OrderRequest order, OrderStatusEnum status){
         return OrderResponse.builder()
                 .externalOrderId(order.getExternalOrderId())
                 .totalValue(totalValueOrder(order))
