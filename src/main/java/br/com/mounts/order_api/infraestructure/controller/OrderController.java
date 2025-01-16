@@ -4,6 +4,7 @@ import br.com.mounts.order_api.domain.dto.OrderDto;
 import br.com.mounts.order_api.domain.dto.OrderRequest;
 import br.com.mounts.order_api.domain.dto.OrderResponse;
 import br.com.mounts.order_api.domain.interfaces.OrderService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/orders")
+@Tag(name = "Orders API", description = "API para gerenciamento de ordens")
 public class OrderController {
 
     private final OrderService orderService;
