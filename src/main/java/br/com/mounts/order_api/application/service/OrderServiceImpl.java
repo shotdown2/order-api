@@ -1,6 +1,8 @@
 package br.com.mounts.order_api.application.service;
 
 import br.com.mounts.order_api.application.enums.OrderStatusEnum;
+import br.com.mounts.order_api.application.exception.BusinessException;
+import br.com.mounts.order_api.domain.dto.OrderDto;
 import br.com.mounts.order_api.domain.dto.OrderItemDto;
 import br.com.mounts.order_api.domain.dto.OrderRequest;
 import br.com.mounts.order_api.domain.dto.OrderResponse;
@@ -13,6 +15,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -55,6 +60,25 @@ public class OrderServiceImpl implements OrderService {
         });
 
         return processedOrders;
+    }
+
+    @Override
+    public Page<OrderDto> findAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable)
+                .map(entity -> modelMapper.map(entity, OrderDto.class));
+    }
+
+    @Override
+    public OrderDto findByExternalOrderId(String externalOrderId) {
+
+        OrderEntity entity = orderRepository.findByExternalOrderId(externalOrderId)
+                .orElseThrow(() -> new BusinessException(
+                        String.valueOf(HttpStatus.NOT_FOUND.value()),
+                        "Pedido não encontrado",
+                        "Pedido não encontrado com externalOrderId: " + externalOrderId,
+                        HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(entity, OrderDto.class);
     }
 
     private void saveProducts(OrderItemDto item, OrderEntity savedOrderEntity){

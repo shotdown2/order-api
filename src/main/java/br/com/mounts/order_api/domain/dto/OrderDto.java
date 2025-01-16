@@ -1,8 +1,10 @@
 package br.com.mounts.order_api.domain.dto;
 
 import br.com.mounts.order_api.application.enums.OrderStatusEnum;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDto {
     private UUID id;
     private String externalOrderId;
